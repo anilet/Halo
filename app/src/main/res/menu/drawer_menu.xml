@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   <item
+       android:id="@+id/nav_settings"
+       android:icon="@drawable/server_network"
+       android:title="Settings"/>
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/home_assistant"
+        android:title="About Halo.."/>
+    <item
+        android:id="@+id/nav_quit"
+        android:icon="@drawable/power"
+        android:title="Quit Halo"/>
+</menu>

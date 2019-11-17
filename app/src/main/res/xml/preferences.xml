@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Basic Settings">
+           <EditTextPreference
+                android:key="device_name"
+                android:title="@string/device_name"
+                android:summary="@string/device_name_summary"
+                android:defaultValue="@string/app_name"
+                android:dependency="device_tracker"/>
+    </PreferenceCategory>
+        <PreferenceScreen
+            android:title="HomeAssistant Settings"
+            android:key="ha_settings">
+                <EditTextPreference
+                    android:key="ha_address"
+                    android:title="@string/ha_address"
+                    android:summary="@string/ha_address_default"
+                    android:defaultValue="@string/ha_address_default"/>
+                <EditTextPreference
+                    android:key="ha_port"
+                    android:title="@string/ha_port"
+                    android:summary="@string/ha_port_default"
+                    android:defaultValue="@string/ha_port_default"/>
+        </PreferenceScreen>
+
+        <CheckBoxPreference
+            android:title="@string/enable_tracking"
+            android:key="device_tracker"
+            android:summary="@string/enable_tracking_summary"
+            android:defaultValue="true"/>
+        <PreferenceScreen
+            android:title="MQTT Settings"
+            android:key="mqtt_settings"
+            android:dependency="device_tracker">
+                <EditTextPreference
+                    android:key="mqtt_address"
+                    android:title="@string/mqtt_address"
+                    android:summary="@string/mqtt_address_default"
+                    android:defaultValue="@string/mqtt_address_default"
+                    android:dependency="device_tracker"/>
+                <EditTextPreference
+                    android:key="mqtt_port"
+                    android:title="Port"
+                    android:summary="@string/mqtt_port_default"
+                    android:defaultValue="@string/mqtt_port_default"
+                    android:dependency="device_tracker"/>
+                <CheckBoxPreference
+                    android:title="Enable SSL/TLS"
+                    android:key="mqtt_tls"
+                    android:defaultValue="false"/>
+                <EditTextPreference
+                    android:title="Username"
+                    android:key="mqtt_username"
+                    android:summary="@string/mqtt_user_default"
+                    android:defaultValue="@string/mqtt_user_default"
+                    android:dependency="mqtt_tls"/>
+                <EditTextPreference
+                    android:title="Password"
+                    android:key="mqtt_password"
+                    android:summary="@string/mqtt_passwd_default"
+                    android:defaultValue="@string/mqtt_passwd_default"
+                    android:dependency="mqtt_tls"/>
+
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="Location Settings"
+            android:key="location_settings"
+            android:dependency="device_tracker">
+            <CheckBoxPreference
+                android:title="High precision(Uses more battery"
+                android:key="location_high_precision"
+                android:defaultValue="false"/>
+            <EditTextPreference
+                android:title="Minimum distance(Default 10m)"
+                android:key="location_distance"
+                android:summary="@string/locaton_distance_default"
+                android:defaultValue="@string/locaton_distance_default"/>
+            <CheckBoxPreference
+                android:title="Heartbeat(Periodic Updates)"
+                android:key="location_heartbeat"
+                android:defaultValue="false"/>
+            <EditTextPreference
+                android:title="Heartbeat Interval"
+                android:key="location_heartbeat_interval"
+                android:summary="@string/locaton_heartbeat_default"
+                android:defaultValue="@string/locaton_heartbeat_default"
+                android:dependency="location_heartbeat"/>
+        </PreferenceScreen>
+
+
+</PreferenceScreen>
