@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Halo</string>
+    <string name="device_name">Device Name</string>
+    <string name="auto_start">Autostart</string>
+    <string name="autostart_summary">Start Halo at system startup</string>
     <string name="settings_heading">Settings</string>
     <string name="ha_address_key">HomeAssistant domain or IP address</string>
     <string name="ha_address">HomeAssistant domain or IP address</string>
@@ -11,7 +14,7 @@
     <string name="ha_access_token">HomeAssistant Long-lived token</string>
     <string name="enable_tracking">Enable Tracking</string>
     <string name="enable_tracking_summary">Send location data to HA through MQTT</string>
-    <string name="device_name">Device Name</string>
+
     <string name="device_name_summary">This will appear as device_tracker on HA</string>
     <string name="mqtt_address">MQTT Server address</string>
     <string name="mqtt_address_summary">ex: example.duckdns.org</string>

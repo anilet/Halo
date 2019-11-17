@@ -9,6 +9,11 @@
                 android:summary="@string/device_name_summary"
                 android:defaultValue="@string/app_name"
                 android:dependency="device_tracker"/>
+            <CheckBoxPreference
+                android:title="@string/auto_start"
+                android:key="autostart"
+                android:summary="@string/autostart_summary"
+                android:defaultValue="true"/>
     </PreferenceCategory>
         <PreferenceScreen
             android:title="HomeAssistant Settings"
