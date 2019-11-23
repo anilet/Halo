@@ -4,8 +4,10 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.location.Location;
 
-public class Preference {
+import com.hypertrack.hyperlog.HyperLog;
 
+public class Preference {
+    private static final String TAG = SettingsActivity.class.getSimpleName();
     private static Location previousLocationInfo;
     private static Location currentLocationInfo;
     private final static  String PREF_DEVICE_NAME  = "device_name";
@@ -55,7 +57,14 @@ public class Preference {
         }
         else return null;
     }
-    public static String getMqttUrl(){ return "tcp://"+mMqttUrl+":"+mMqttPort; }
+    public static String getMqttUrl(){
+        if (mMqttTls) {
+            //HyperLog.i(TAG, "ssl://"+mMqttUrl+":"+mMqttPort);
+            return "ssl://"+mMqttUrl+":"+mMqttPort;
+        }
+        //HyperLog.i(TAG, "tcp://"+mMqttUrl+":"+mMqttPort);
+        return "tcp://"+mMqttUrl+":"+mMqttPort;
+    }
     public static String getMqttUsername(){ return mMqttUsername; }
     public static String getMqttPasswd(){ return mMqttPasswd; }
 

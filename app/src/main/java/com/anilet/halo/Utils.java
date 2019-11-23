@@ -33,6 +33,8 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
+import com.hypertrack.hyperlog.HyperLog;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -128,6 +130,7 @@ class Utils {
         }
         // Issue the notification
         mNotificationManager.notify(0, builder.build());
+
     }
 
 
@@ -260,8 +263,10 @@ class Utils {
         /* {"battery_level":44,"longitude":153.1122779,"latitude":-27.8869922,"altitude":86,"gps_accuracy":22,"tst":1572752503}
          */
         int currentBatteryLevel = getBatteryPercentage(context);
-        String mServerUrl = Preference.getMqttUrl();
+        String mServerUrl = Preference.getMqttUrl(); //"ssl://homemonitor.duckdns.org:8883";//
+        //String mTopic = "halo/halo_pixel3/location";
         String mTopic = "halo/"+Preference.getDeviceName()+"/location";
+        HyperLog.d(TAG, "Sending location to MQTT server");
         try {
             client = new MqttClient(mServerUrl, "halo", new MemoryPersistence());
                 //client.setCallback(this);
@@ -269,13 +274,18 @@ class Utils {
             } catch (MqttException e) {
                 e.printStackTrace();
             }
+            String message = "";
             if (client != null) {
                 try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("battery_level", currentBatteryLevel);
+                    message = "Battery level: "+currentBatteryLevel;
                     jsonObject.put("longitude", locations.getLongitude());//Float.parseFloat(lon));
+                    message = message+" Lon: "+ locations.getLongitude();
                     jsonObject.put("latitude", locations.getLatitude()); //Float.parseFloat(lat));
+                    message = message+" Lat: "+ locations.getLatitude();
                     jsonObject.put("altitude", locations.getAltitude()); //Float.parseFloat(alt));
+                    message = message+" Alt: "+ locations.getAltitude();
                     jsonObject.put("gps_accuracy", Math.round(locations.getAccuracy())); //Integer.parseInt(acc));
                     MqttMessage mqttMessage = new MqttMessage();
                     mqttMessage.setPayload(jsonObject.toString().getBytes());
@@ -288,6 +298,7 @@ class Utils {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                HyperLog.d(TAG, "Send location: "+message);
             } else {
                 Log.i(TAG, "Failed setting up");
             }

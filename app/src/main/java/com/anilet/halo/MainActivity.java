@@ -24,6 +24,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.hypertrack.hyperlog.HyperLog;
+import com.anilet.halo.log.CustomLogFormat;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -66,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
-
+        initLogger();
+        HyperLog.d(TAG, "Setting up user interface ...");
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -74,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case R.id.nav_settings:
                         startSettingActivity();
+                        drawerLayout.closeDrawers();
+                        return true;
+
+                    case R.id.nav_logs:
+                        startLogActivity();
                         drawerLayout.closeDrawers();
                         return true;
 
@@ -89,10 +97,10 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions();
         }
         setupWebView();
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         createLocationRequest();
         requestLocationUpdates(null);
-
     }
 
     public  void startSettingActivity()
@@ -101,6 +109,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public  void startLogActivity()
+    {
+        Intent intent = new Intent(this, LogActivity.class);
+        startActivity(intent);
+    }
+
+    private void initLogger() {
+        HyperLog.initialize(this, new CustomLogFormat(this));
+        if (BuildConfig.DEBUG) {
+            HyperLog.setLogLevel(Log.VERBOSE);
+        } else {
+            HyperLog.setLogLevel(Log.INFO);
+        }
+    }
     private void setupWebView(){
         if(mWebView == null) {
             mWebView = findViewById(R.id.webView);
@@ -119,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         }
+        HyperLog.d(TAG, "Completed Setting up user interface ...");
     }
 
     /**
@@ -126,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void requestLocationUpdates(View view) {
         try {
-            Log.i(TAG, "Starting location updates");
+            HyperLog.d(TAG, "Starting location updates");
             Utils.setRequestingLocationUpdates(this, true);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, getPendingIntent());
         } catch (SecurityException e) {
@@ -139,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
      * Handles the Remove Updates button, and requests removal of location updates.
      */
     public void removeLocationUpdates(View view) {
-        Log.i(TAG, "Removing location updates");
+        HyperLog.i(TAG, "Removing location updates");
         Utils.setRequestingLocationUpdates(this, false);
         mFusedLocationClient.removeLocationUpdates(getPendingIntent());
     }
@@ -166,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void requestLocationUpdates() {
         try {
-            Log.i(TAG, "Starting location updates");
+            //Log.i(TAG, "Starting location updates");
+            HyperLog.i(TAG, "Starting location updates");
             Utils.setRequestingLocationUpdates(this, true);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, getPendingIntent());
         } catch (SecurityException e) {
@@ -203,12 +227,12 @@ public class MainActivity extends AppCompatActivity {
         // application will never receive updates faster than this value.
 
         if (Preference.getHighPrecisionLocationEnabled()){
-            Log.i(TAG, "High accuracy location updates");
+            HyperLog.i(TAG, "High accuracy location updates");
             mLocationRequest.setInterval(UPDATE_INTERVAL);
             mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         } else {
-            Log.i(TAG, "Passive location updates");
+            HyperLog.i(TAG, "Passive location updates");
             mLocationRequest.setInterval(60*30*1000);
             mLocationRequest.setFastestInterval(60*1000);
             mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -280,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
         // Provide an additional rationale to the user. This would happen if the user denied the
         // request previously, but didn't check the "Don't ask again" checkbox.
         if (shouldProvideRationale) {
-            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+           // Log.i(TAG, "Displaying permission rationale to provide additional context.");
             Snackbar.make(
                     findViewById(R.id.fragment_container),
                     R.string.permission_rationale,
@@ -299,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .show();
         } else {
-            Log.i(TAG, "Requesting permission");
+           // HyperLog.i(TAG, "Requesting permission");
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
@@ -320,12 +344,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        Log.i(TAG, "onRequestPermissionResult");
+        //HyperLog.i(TAG, "onRequestPermissionResult");
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
-                Log.i(TAG, "User interaction was cancelled.");
+                //HyperLog.i(TAG, "User interaction was cancelled.");
 
             } else if ((grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
                     (grantResults[1] == PackageManager.PERMISSION_GRANTED) &&

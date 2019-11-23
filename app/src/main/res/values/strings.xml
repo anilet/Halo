@@ -31,4 +31,10 @@
         functionality.</string>
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
+    <string name="tab_log_title">Log</string>
+    <string name="button_reload">Reload</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_export">Export</string>
+    <string name="toast_no_logs">No logs available</string>
+    <string name="tab_licenses_title">Licenses</string>
 </resources>

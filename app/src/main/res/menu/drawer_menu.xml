@@ -5,6 +5,10 @@
        android:icon="@drawable/server_network"
        android:title="Settings"/>
     <item
+        android:id="@+id/nav_logs"
+        android:icon="@drawable/server_network"
+        android:title="Show Logs"/>
+    <item
         android:id="@+id/nav_about"
         android:icon="@drawable/home_assistant"
         android:title="About Halo.."/>
